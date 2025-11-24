@@ -42,7 +42,9 @@ export const ProductEdit = () => {
   }
 
   // Загружаем статусы (только для продуктов)
-  const statusesResult = useList({
+  const {
+    result: { data: statusesData = [] },
+  } = useList({
     resource: "statuses",
     meta: {
       entity_type: "product",
@@ -50,12 +52,11 @@ export const ProductEdit = () => {
   });
 
   // Загружаем категории
-  const categoriesResult = useList({
+  const {
+    result: { data: categoriesData = [] },
+  } = useList({
     resource: "categories",
   });
-  
-  const statusesData = statusesResult?.data;
-  const categoriesData = categoriesResult?.data;
 
   return (
     <EditView>
@@ -113,7 +114,7 @@ export const ProductEdit = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categoriesData?.data?.map((category: { id: number; name: string }) => (
+                      {categoriesData?.map((category: { id: number; name: string }) => (
                         <SelectItem key={category.id} value={String(category.id)}>
                           {category.name}
                         </SelectItem>
@@ -220,7 +221,7 @@ export const ProductEdit = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {statusesData?.data?.map((status: { id: number; name: string | null }) => (
+                    {statusesData?.map((status: { id: number; name: string | null }) => (
                       <SelectItem key={status.id} value={String(status.id)}>
                         {status.name || `ID: ${status.id}`}
                       </SelectItem>

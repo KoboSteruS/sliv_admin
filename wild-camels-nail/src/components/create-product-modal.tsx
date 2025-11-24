@@ -40,7 +40,8 @@ type FormValues = {
 
 export const CreateProductModal = () => {
   const [open, setOpen] = useState(false);
-  const { mutate: createProduct, isLoading: isPending } = useCreate();
+  const [isPending, setIsPending] = useState(false);
+  const { mutate: createProduct } = useCreate();
   const invalidate = useInvalidate();
   
   // Загружаем категории напрямую через fetch
@@ -125,6 +126,7 @@ export const CreateProductModal = () => {
 
     // Создаём заявку через API
     // status_id не передаём - бэкенд установит автоматически "новый"
+    setIsPending(true);
     createProduct(
       {
         resource: "products",
@@ -147,11 +149,13 @@ export const CreateProductModal = () => {
           });
           setOpen(false);
           form.reset();
+          setIsPending(false);
         },
         onError: (error: any) => {
           toast.error("Ошибка", {
             description: error?.message || "Не удалось создать заявку",
           });
+          setIsPending(false);
         },
       }
     );

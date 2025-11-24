@@ -48,7 +48,9 @@ type Product = {
 
 export const ProductList = () => {
   // Загружаем статусы для фильтрации (только для продуктов)
-  const statusesResult = useList({
+  const {
+    result: { data: statuses = [] },
+  } = useList({
     resource: "statuses",
     meta: {
       entity_type: "product",
@@ -56,12 +58,11 @@ export const ProductList = () => {
   });
 
   // Загружаем категории для фильтрации
-  const categoriesResult = useList({
+  const {
+    result: { data: categories = [] },
+  } = useList({
     resource: "categories",
   });
-  
-  const statuses = statusesResult?.data?.data || [];
-  const categories = categoriesResult?.data?.data || [];
 
   const columns = React.useMemo(() => {
     const columnHelper = createColumnHelper<Product>();
@@ -208,14 +209,9 @@ export const ProductList = () => {
   // Отладочная информация
   React.useEffect(() => {
     console.log("=== Products Table Debug ===");
-    console.log("refineCore:", table.refineCore);
-    console.log("data:", table.refineCore?.queryResult?.data);
-    console.log("error:", table.refineCore?.queryResult?.error);
-    console.log("isLoading:", table.refineCore?.queryResult?.isLoading);
-    console.log("isFetching:", table.refineCore?.queryResult?.isFetching);
-    console.log("refetch:", table.refineCore?.queryResult?.refetch);
+    console.log("table:", table);
     console.log("===========================");
-  }, [table.refineCore]);
+  }, [table]);
 
   return (
     <ListView>

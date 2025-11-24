@@ -42,7 +42,9 @@ export const ProductCreate = () => {
   }
 
   // Загружаем статусы
-  const statusesResult = useList({
+  const {
+    result: { data: statusesData = [] },
+  } = useList({
     resource: "statuses",
     meta: {
       entity_type: "product",
@@ -50,12 +52,11 @@ export const ProductCreate = () => {
   });
 
   // Загружаем категории
-  const categoriesResult = useList({
+  const {
+    result: { data: categoriesData = [] },
+  } = useList({
     resource: "categories",
   });
-  
-  const statusesData = statusesResult?.data;
-  const categoriesData = categoriesResult?.data;
 
   return (
     <CreateView>
@@ -116,7 +117,7 @@ export const ProductCreate = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categoriesData?.data?.map((category: { id: number; name: string }) => (
+                      {categoriesData?.map((category: { id: number; name: string }) => (
                         <SelectItem key={category.id} value={String(category.id)}>
                           {category.name}
                         </SelectItem>
@@ -224,7 +225,7 @@ export const ProductCreate = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {statusesData?.data?.map((status: { id: number; name: string | null }) => (
+                    {statusesData?.map((status: { id: number; name: string | null }) => (
                       <SelectItem key={status.id} value={String(status.id)}>
                         {status.name || `ID: ${status.id}`}
                       </SelectItem>
