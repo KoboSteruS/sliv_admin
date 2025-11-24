@@ -4,13 +4,15 @@
  */
 import { DataProvider } from "@refinedev/core";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8100/api/v1";
+// Для production используем относительный путь через Nginx
+// Для dev можно задать VITE_API_URL=http://localhost:8100/api/v1
+const API_URL = import.meta.env.VITE_API_URL || "/api/v1";
 
 // Логируем URL API при загрузке модуля
 console.log("[DataProvider] Инициализация:", {
   API_URL,
   VITE_API_URL: import.meta.env.VITE_API_URL,
-  default: "http://localhost:8100/api/v1",
+  default: "/api/v1",
 });
 
 // Логируем URL API при загрузке

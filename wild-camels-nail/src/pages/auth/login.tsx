@@ -32,7 +32,7 @@ export const LoginPage = () => {
 
     try {
       // Проверяем токен через API
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8100/api/v1";
+      const apiUrl = import.meta.env.VITE_API_URL || "/api/v1";
       const response = await fetch(
         `${apiUrl}/products?token=${encodeURIComponent(token)}&page=1&page_size=1`
       );

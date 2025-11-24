@@ -56,7 +56,7 @@ export const CreateProductModal = () => {
         setCategoriesError(null);
         
         const token = localStorage.getItem("auth_token");
-        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8100/api/v1";
+        const apiUrl = import.meta.env.VITE_API_URL || "/api/v1";
         const url = `${apiUrl}/categories${token ? `?token=${encodeURIComponent(token)}` : ''}`;
         
         console.log("[CreateProductModal] Загрузка категорий:", url);
