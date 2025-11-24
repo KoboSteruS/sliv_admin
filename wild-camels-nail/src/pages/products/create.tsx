@@ -117,7 +117,7 @@ export const ProductCreate = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categoriesData?.map((category: { id: number; name: string }) => (
+                      {categoriesData?.map((category: any) => (
                         <SelectItem key={category.id} value={String(category.id)}>
                           {category.name}
                         </SelectItem>
@@ -225,7 +225,7 @@ export const ProductCreate = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {statusesData?.map((status: { id: number; name: string | null }) => (
+                    {statusesData?.map((status: any) => (
                       <SelectItem key={status.id} value={String(status.id)}>
                         {status.name || `ID: ${status.id}`}
                       </SelectItem>
