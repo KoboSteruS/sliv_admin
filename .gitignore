@@ -1,0 +1,70 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Vite
+.vite/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+back/logs/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Test files
+*.test.py
+test_*.py
+check_*.py
+get_token.py
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+
+
+
+# Frontend ignore
+wild-camels-nail/node_modules/
+wild-camels-nail/.next/
+wild-camels-nail/.cache/
+wild-camels-nail/dist/
+wild-camels-nail/build/
+wild-camels-nail/out/
+wild-camels-nail/.turbo/
+wild-camels-nail/.swc/
+wild-camels-nail/.parcel-cache/
+wild-camels-nail/.vite/
