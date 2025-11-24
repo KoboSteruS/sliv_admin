@@ -4,13 +4,13 @@
  */
 import { DataProvider } from "@refinedev/core";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8100/api/v1";
 
 // Логируем URL API при загрузке модуля
 console.log("[DataProvider] Инициализация:", {
   API_URL,
   VITE_API_URL: import.meta.env.VITE_API_URL,
-  default: "http://localhost:8000/api/v1",
+  default: "http://localhost:8100/api/v1",
 });
 
 // Логируем URL API при загрузке
@@ -73,14 +73,16 @@ export const dataProvider: DataProvider = {
     
     // Добавляем параметры пагинации только если пагинация включена
     if (pagination && pagination.mode !== "off") {
-      params.append("page", String(pagination.current || 1));
-      params.append("page_size", String(pagination.pageSize || 10));
+      const currentPage = (pagination as any).current || (pagination as any).page || 1;
+      const pageSize = (pagination as any).pageSize || (pagination as any).perPage || 10;
+      params.append("page", String(currentPage));
+      params.append("page_size", String(pageSize));
     }
     
     // Добавляем фильтры
     if (filters) {
-      filters.forEach((filter) => {
-        if (filter.field && filter.value !== undefined) {
+      filters.forEach((filter: any) => {
+        if (filter && typeof filter === "object" && "field" in filter && filter.field && filter.value !== undefined) {
           params.append(filter.field, String(filter.value));
         }
       });
@@ -204,7 +206,7 @@ export const dataProvider: DataProvider = {
     return result;
   },
   
-  getOne: async ({ resource, id, meta }) => {
+  getOne: async ({ resource, id, meta: _meta }) => {
     const url = `${API_URL}/${resource}/${id}`;
     const urlWithToken = addTokenToUrl(url);
     
@@ -221,7 +223,7 @@ export const dataProvider: DataProvider = {
     };
   },
   
-  create: async ({ resource, variables, meta }) => {
+  create: async ({ resource, variables, meta: _meta }) => {
     const token = getToken();
     const url = token 
       ? `${API_URL}/${resource}?token=${encodeURIComponent(token)}`
@@ -258,7 +260,7 @@ export const dataProvider: DataProvider = {
     };
   },
   
-  update: async ({ resource, id, variables, meta }) => {
+  update: async ({ resource, id, variables, meta: _meta }) => {
     const token = getToken();
     const url = token 
       ? `${API_URL}/${resource}/${id}?token=${encodeURIComponent(token)}`
@@ -284,7 +286,7 @@ export const dataProvider: DataProvider = {
     };
   },
   
-  deleteOne: async ({ resource, id, meta }) => {
+  deleteOne: async ({ resource, id, meta: _meta }) => {
     const token = getToken();
     const url = token 
       ? `${API_URL}/${resource}/${id}?token=${encodeURIComponent(token)}`
@@ -300,14 +302,14 @@ export const dataProvider: DataProvider = {
     }
     
     return {
-      data: { id },
+      data: { id } as any,
     };
   },
   
   getApiUrl: () => API_URL,
   
   // Дополнительные методы для полной совместимости
-  getMany: async ({ resource, ids, meta }) => {
+  getMany: async ({ resource, ids, meta: _meta }) => {
     const token = getToken();
     const promises = ids.map((id) => {
       const url = token 
@@ -322,7 +324,7 @@ export const dataProvider: DataProvider = {
     };
   },
   
-  createMany: async ({ resource, variables, meta }) => {
+  createMany: async ({ resource, variables, meta: _meta }) => {
     const token = getToken();
     const url = token 
       ? `${API_URL}/${resource}?token=${encodeURIComponent(token)}`
@@ -344,7 +346,7 @@ export const dataProvider: DataProvider = {
     };
   },
   
-  updateMany: async ({ resource, ids, variables, meta }) => {
+  updateMany: async ({ resource, ids, variables, meta: _meta }) => {
     const token = getToken();
     const promises = ids.map((id) => {
       const url = token 
@@ -365,7 +367,7 @@ export const dataProvider: DataProvider = {
     };
   },
   
-  deleteMany: async ({ resource, ids, meta }) => {
+  deleteMany: async ({ resource, ids, meta: _meta }) => {
     const token = getToken();
     const promises = ids.map((id) => {
       const url = token 
@@ -378,11 +380,11 @@ export const dataProvider: DataProvider = {
     
     await Promise.all(promises);
     return {
-      data: ids.map((id) => ({ id })),
+      data: ids.map((id) => ({ id })) as any[],
     };
   },
   
-  custom: async ({ url, method, payload, headers, meta }) => {
+  custom: async ({ url, method, payload, headers, meta: _meta }) => {
     const token = getToken();
     const finalUrl = addTokenToUrl(url.startsWith("http") ? url : `${API_URL}${url}`);
     

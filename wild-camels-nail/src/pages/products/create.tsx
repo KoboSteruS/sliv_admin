@@ -42,14 +42,20 @@ export const ProductCreate = () => {
   }
 
   // Загружаем статусы
-  const { data: statusesData } = useList({
+  const statusesResult = useList({
     resource: "statuses",
+    meta: {
+      entity_type: "product",
+    },
   });
 
   // Загружаем категории
-  const { data: categoriesData } = useList({
+  const categoriesResult = useList({
     resource: "categories",
   });
+  
+  const statusesData = statusesResult?.data;
+  const categoriesData = categoriesResult?.data;
 
   return (
     <CreateView>

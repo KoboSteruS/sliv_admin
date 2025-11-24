@@ -32,8 +32,9 @@ export const LoginPage = () => {
 
     try {
       // Проверяем токен через API
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8100/api/v1";
       const response = await fetch(
-        `http://localhost:8000/api/v1/products?token=${encodeURIComponent(token)}&page=1&page_size=1`
+        `${apiUrl}/products?token=${encodeURIComponent(token)}&page=1&page_size=1`
       );
 
       if (response.ok) {

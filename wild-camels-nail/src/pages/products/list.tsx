@@ -48,10 +48,7 @@ type Product = {
 
 export const ProductList = () => {
   // Загружаем статусы для фильтрации (только для продуктов)
-  const {
-    data: statusesData,
-    isLoading: statusesLoading,
-  } = useList({
+  const statusesResult = useList({
     resource: "statuses",
     meta: {
       entity_type: "product",
@@ -59,12 +56,12 @@ export const ProductList = () => {
   });
 
   // Загружаем категории для фильтрации
-  const {
-    data: categoriesData,
-    isLoading: categoriesLoading,
-  } = useList({
+  const categoriesResult = useList({
     resource: "categories",
   });
+  
+  const statuses = statusesResult?.data?.data || [];
+  const categories = categoriesResult?.data?.data || [];
 
   const columns = React.useMemo(() => {
     const columnHelper = createColumnHelper<Product>();
@@ -211,14 +208,14 @@ export const ProductList = () => {
   // Отладочная информация
   React.useEffect(() => {
     console.log("=== Products Table Debug ===");
-    console.log("tableQueryResult:", table.tableQueryResult);
-    console.log("data:", table.tableQueryResult?.data);
-    console.log("error:", table.tableQueryResult?.error);
-    console.log("isLoading:", table.tableQueryResult?.isLoading);
-    console.log("isFetching:", table.tableQueryResult?.isFetching);
-    console.log("refetch:", table.tableQueryResult?.refetch);
+    console.log("refineCore:", table.refineCore);
+    console.log("data:", table.refineCore?.queryResult?.data);
+    console.log("error:", table.refineCore?.queryResult?.error);
+    console.log("isLoading:", table.refineCore?.queryResult?.isLoading);
+    console.log("isFetching:", table.refineCore?.queryResult?.isFetching);
+    console.log("refetch:", table.refineCore?.queryResult?.refetch);
     console.log("===========================");
-  }, [table.tableQueryResult]);
+  }, [table.refineCore]);
 
   return (
     <ListView>

@@ -24,8 +24,8 @@ if [ $? -ne 0 ]; then
 fi
 
 echo ""
-echo "Запуск сервера на http://localhost:8000"
+echo "Запуск сервера на http://localhost:8100"
 echo "Для остановки нажмите Ctrl+C"
 echo ""
-python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8100
 

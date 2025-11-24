@@ -40,7 +40,7 @@ type FormValues = {
 
 export const CreateProductModal = () => {
   const [open, setOpen] = useState(false);
-  const { mutate: createProduct, isPending } = useCreate();
+  const { mutate: createProduct, isLoading: isPending } = useCreate();
   const invalidate = useInvalidate();
   
   // Загружаем категории напрямую через fetch
@@ -55,7 +55,8 @@ export const CreateProductModal = () => {
         setCategoriesError(null);
         
         const token = localStorage.getItem("auth_token");
-        const url = `http://localhost:8000/api/v1/categories${token ? `?token=${encodeURIComponent(token)}` : ''}`;
+        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8100/api/v1";
+        const url = `${apiUrl}/categories${token ? `?token=${encodeURIComponent(token)}` : ''}`;
         
         console.log("[CreateProductModal] Загрузка категорий:", url);
         

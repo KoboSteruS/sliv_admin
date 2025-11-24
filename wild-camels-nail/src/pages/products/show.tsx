@@ -7,10 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export const ProductShow = () => {
-  const { queryResult } = useShow();
-  const { data, isLoading } = queryResult;
+  const showResult = useShow();
+  const { data, isLoading } = showResult;
 
-  const record = data?.data;
+  const record = data?.data || data;
 
   if (isLoading) {
     return <div>Загрузка...</div>;
